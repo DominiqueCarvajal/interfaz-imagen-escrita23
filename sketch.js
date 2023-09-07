@@ -1,5 +1,3 @@
-let lienzoAncho = 600; // Ancho del lienzo
-let lienzoAlto = 400; // Alto del lienzo
 let fondoImg; // Variable para la imagen de fondo
 let rectangulos = []; // Arreglo de rectángulos
 let numRectangulos = 8; // Número de rectángulos
@@ -10,25 +8,25 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(lienzoAncho, lienzoAlto);
+  createCanvas(windowWidth, windowHeight); // El lienzo ocupa toda la ventana del navegador
 
   // Crea los rectángulos en ubicaciones fijas
   let ubicacionesFijas = [
-    { x: 100, y: 100 },
-    { x: 200, y: 150 },
-    { x: 300, y: 200 },
-    { x: 400, y: 250 },
-    { x: 150, y: 300 },
-    { x: 250, y: 350 },
-    { x: 350, y: 50 },
-    { x: 450, y: 150 }
+    { x: 100, y: 100, url: 'https://dominiquecarvajal.github.io/imagenescrita23-dominiquecarvajal/' },
+    { x: 200, y: 150, url: 'https://dominiquecarvajal.github.io/imagen-escrita-tarea2-23/' },
+    { x: 300, y: 200, url: 'https://dominiquecarvajal.github.io/tarea3-ie23-dominiquecarvajal/' },
+    { x: 400, y: 250, url: 'https://www.ejemplo.com/pagina4' },
+    { x: 150, y: 300, url: 'https://www.ejemplo.com/pagina5' },
+    { x: 250, y: 350, url: 'https://www.ejemplo.com/pagina6' },
+    { x: 350, y: 50, url: 'https://www.ejemplo.com/pagina7' },
+    { x: 450, y: 150, url: 'https://www.ejemplo.com/pagina8' }
   ];
 
   for (let i = 0; i < numRectangulos; i++) {
     let lado = random(30, 60); // Lado inicial del cuadrado (ajusta según sea necesario)
     let ubicacion = ubicacionesFijas[i];
     let texto = localStorage.getItem(`rectangulo${i + 1}`) || `Texto #${i + 1}`; // Texto predeterminado o cargado desde el almacenamiento local
-    let rectangulo = new Rectangulo(ubicacion.x, ubicacion.y, lado, texto);
+    let rectangulo = new Rectangulo(ubicacion.x, ubicacion.y, lado, texto, ubicacion.url);
     rectangulos.push(rectangulo);
   }
 
@@ -46,13 +44,15 @@ function draw() {
   // Dibuja los rectángulos
   for (let rectangulo of rectangulos) {
     rectangulo.mostrar();
+    rectangulo.interactuar(mouseX, mouseY);
   }
 }
 
-function mouseMoved() {
-  // Verifica si el mouse está sobre alguno de los rectángulos
+function mousePressed() {
   for (let rectangulo of rectangulos) {
-    rectangulo.interactuar(mouseX, mouseY);
+    if (rectangulo.seleccionado) {
+      window.open(rectangulo.url, '_blank');
+    }
   }
 }
 
@@ -78,13 +78,15 @@ function guardarCambios() {
 }
 
 class Rectangulo {
-  constructor(x, y, lado, texto) {
+  constructor(x, y, lado, texto, url) {
     this.x = x;
     this.y = y;
     this.ancho = lado; // El ancho inicial es igual al lado
     this.alto = lado; // La altura inicial es igual al lado
     this.expandir = false;
     this.texto = texto; // Texto a mostrar cuando se expanda
+    this.url = url; // URL de redirección
+    this.seleccionado = false; // Indicador de selección
   }
 
   mostrar() {
@@ -115,14 +117,16 @@ class Rectangulo {
     // Verifica si el mouse está sobre este rectángulo
     if (mx > this.x && mx < this.x + this.ancho && my > this.y && my < this.y + this.alto) {
       this.expandir = true;
+      this.seleccionado = true;
     } else {
       this.expandir = false;
+      this.seleccionado = false;
     }
 
     // Ajusta el ancho del rectángulo en función de si se debe expandir o no
     if (this.expandir) {
       this.ancho = lerp(this.ancho, 150, 0.1);
-      this.ancho = constrain(this.ancho, 0, lienzoAncho - this.x); // Evitar que se salga del lienzo
+      this.ancho = constrain(this.ancho, 0, width - this.x); // Evitar que se salga del lienzo
     } else {
       this.ancho = lerp(this.ancho, this.alto, 0.1); // Al pasar el mouse, vuelve a ser un cuadrado
     }
