@@ -15,7 +15,7 @@ function setup() {
     { x: 100, y: 100, url: 'https://dominiquecarvajal.github.io/imagenescrita23-dominiquecarvajal/' },
     { x: 200, y: 150, url: 'https://dominiquecarvajal.github.io/imagen-escrita-tarea2-23/' },
     { x: 300, y: 200, url: 'https://dominiquecarvajal.github.io/tarea3-ie23-dominiquecarvajal/' },
-    { x: 400, y: 250, url: 'https://www.ejemplo.com/pagina4' },
+    { x: 400, y: 250, url: 'https://dominiquecarvajal.github.io/Tarea4-IE23-DominiqueCG/' },
     { x: 150, y: 300, url: 'https://www.ejemplo.com/pagina5' },
     { x: 250, y: 350, url: 'https://www.ejemplo.com/pagina6' },
     { x: 350, y: 50, url: 'https://www.ejemplo.com/pagina7' },
