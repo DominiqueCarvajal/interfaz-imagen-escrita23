@@ -7,7 +7,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1200, 800); // Establece el tamaño del lienzo (ancho x alto)
+  createCanvas(2000, 800); // Establece el tamaño del lienzo (ancho x alto)
 
   // Crea el rectángulo inicial en la esquina inferior izquierda
   rectanguloInicial = new RectanguloInicial(0, height - 60);
