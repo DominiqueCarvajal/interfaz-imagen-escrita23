@@ -1,45 +1,49 @@
 let fondoImg; // Variable para la imagen de fondo
 let rectangulos = []; // Arreglo de rectángulos
-let numRectangulos = 8; // Número de rectángulos
-let rectanguloSeleccionado = null; // Rectángulo actualmente seleccionado para edición
+let rectanguloInicial; // Rectángulo inicial en la esquina inferior izquierda
 
 function preload() {
   fondoImg = loadImage('fondoIF.jpg'); // Carga tu imagen de fondo
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight); // El lienzo ocupa toda la ventana del navegador
+  createCanvas(1200, 800); // Establece el tamaño del lienzo (ancho x alto)
+
+  // Crea el rectángulo inicial en la esquina inferior izquierda
+  rectanguloInicial = new RectanguloInicial(0, height - 60);
 
   // Crea los rectángulos en ubicaciones fijas
   let ubicacionesFijas = [
-    { x: 100, y: 100, url: 'https://dominiquecarvajal.github.io/imagenescrita23-dominiquecarvajal/' },
-    { x: 200, y: 150, url: 'https://dominiquecarvajal.github.io/imagen-escrita-tarea2-23/' },
-    { x: 300, y: 200, url: 'https://dominiquecarvajal.github.io/tarea3-ie23-dominiquecarvajal/' },
-    { x: 400, y: 250, url: 'https://dominiquecarvajal.github.io/Tarea4-IE23-DominiqueCG/' },
-    { x: 150, y: 300, url: 'https://www.ejemplo.com/pagina5' },
-    { x: 250, y: 350, url: 'https://www.ejemplo.com/pagina6' },
-    { x: 350, y: 50, url: 'https://www.ejemplo.com/pagina7' },
-    { x: 450, y: 150, url: 'https://www.ejemplo.com/pagina8' }
+    { x: 90, y: 60, url: 'https://dominiquecarvajal.github.io/imagenescrita23-dominiquecarvajal/', nombre: 'Tarea 1' },
+    { x: 200, y: 150, url: 'https://dominiquecarvajal.github.io/imagen-escrita-tarea2-23/', nombre: 'Tarea 2' },
+    { x: 300, y: 200, url: 'https://dominiquecarvajal.github.io/tarea3-ie23-dominiquecarvajal/', nombre: 'Tarea 3' },
+    { x: 400, y: 250, url: 'https://dominiquecarvajal.github.io/Tarea4-IE23-DominiqueCG/', nombre: 'Tarea 4' },
+    { x: 150, y: 300, url: 'https://www.ejemplo.com/pagina5', nombre: 'Tarea 5' },
+    { x: 250, y: 350, url: 'https://www.ejemplo.com/pagina6', nombre: 'Tarea 6' },
+    { x: 350, y: 50, url: 'https://www.ejemplo.com/pagina7', nombre: 'Tarea 7' },
+    { x: 450, y: 150, url: 'https://www.ejemplo.com/pagina8', nombre: 'Tarea 8' },
+    { x: 550, y: 250, url: 'https://www.ejemplo.com/pagina9', nombre: 'Tarea 9' },
+    { x: 650, y: 100, url: 'https://www.ejemplo.com/pagina10', nombre: 'Tarea 10' },
+    { x: 500, y: 350, url: 'https://www.ejemplo.com/pagina11', nombre: 'Tarea 11' },
+    { x: 650, y: 400, url: 'https://www.ejemplo.com/pagina12', nombre: 'Tarea 12' },
+    { x: 950, y: 250, url: 'https://www.ejemplo.com/pagina13', nombre: 'Tarea 13' },
+    { x: 1050, y: 500, url: 'https://www.ejemplo.com/pagina14', nombre: 'Tarea 14' },
+    { x: 600, y: 650, url: 'https://www.ejemplo.com/pagina15', nombre: 'Tarea 15' },
+    { x: 800, y: 600, url: 'https://www.ejemplo.com/pagina16', nombre: 'Tarea 16' }
   ];
 
-  for (let i = 0; i < numRectangulos; i++) {
+  for (let ubicacion of ubicacionesFijas) {
     let lado = random(30, 60); // Lado inicial del cuadrado (ajusta según sea necesario)
-    let ubicacion = ubicacionesFijas[i];
-    let texto = localStorage.getItem(`rectangulo${i + 1}`) || `Texto #${i + 1}`; // Texto predeterminado o cargado desde el almacenamiento local
-    let rectangulo = new Rectangulo(ubicacion.x, ubicacion.y, lado, texto, ubicacion.url);
+    let rectangulo = new Rectangulo(ubicacion.x, ubicacion.y, lado, ubicacion.nombre, ubicacion.url);
     rectangulos.push(rectangulo);
   }
-
-  // Botón para guardar cambios
-  let guardarBoton = createButton('Guardar Cambios');
-  guardarBoton.position(width - 130, height - 40);
-  guardarBoton.style('background-color', 'black');
-  guardarBoton.style('color', 'white');
-  guardarBoton.mousePressed(guardarCambios);
 }
 
 function draw() {
   background(fondoImg); // Establece la imagen de fondo
+
+  // Dibuja el rectángulo inicial
+  rectanguloInicial.mostrar();
 
   // Dibuja los rectángulos
   for (let rectangulo of rectangulos) {
@@ -56,35 +60,14 @@ function mousePressed() {
   }
 }
 
-function keyPressed() {
-  // Cambiar el texto del rectángulo cuando se presione la tecla correspondiente
-  let index = key - '1'; // Convierte el número de tecla a un índice (0-7)
-  if (index >= 0 && index < rectangulos.length) {
-    rectanguloSeleccionado = rectangulos[index];
-    let nuevoTexto = prompt(`Ingrese el nuevo texto para el rectángulo ${index + 1}:`);
-    if (nuevoTexto !== null) {
-      rectanguloSeleccionado.setTexto(nuevoTexto);
-    }
-    rectanguloSeleccionado = null; // Restablecer el rectángulo seleccionado
-  }
-}
-
-function guardarCambios() {
-  // Guardar los cambios en el almacenamiento local
-  for (let i = 0; i < rectangulos.length; i++) {
-    let texto = rectangulos[i].getTexto();
-    localStorage.setItem(`rectangulo${i + 1}`, texto);
-  }
-}
-
 class Rectangulo {
-  constructor(x, y, lado, texto, url) {
+  constructor(x, y, lado, nombre, url) {
     this.x = x;
     this.y = y;
     this.ancho = lado; // El ancho inicial es igual al lado
     this.alto = lado; // La altura inicial es igual al lado
     this.expandir = false;
-    this.texto = texto; // Texto a mostrar cuando se expanda
+    this.nombre = nombre; // Nombre del rectángulo
     this.url = url; // URL de redirección
     this.seleccionado = false; // Indicador de selección
   }
@@ -94,23 +77,13 @@ class Rectangulo {
     stroke(255);
     rect(this.x, this.y, this.ancho, this.alto);
 
-    // Muestra el texto solo cuando el rectángulo se expande
+    // Muestra el nombre solo cuando el rectángulo se expande
     if (this.expandir) {
       textAlign(CENTER, CENTER);
       textSize(16);
       fill(255);
-      text(this.texto, this.x + this.ancho / 2, this.y + this.alto / 2);
+      text(this.nombre, this.x + this.ancho / 2, this.y + this.alto / 2);
     }
-  }
-
-  // Agregar un método para actualizar el texto
-  setTexto(nuevoTexto) {
-    this.texto = nuevoTexto;
-  }
-
-  // Agregar un método para obtener el texto
-  getTexto() {
-    return this.texto;
   }
 
   interactuar(mx, my) {
@@ -132,3 +105,31 @@ class Rectangulo {
     }
   }
 }
+
+class RectanguloInicial {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.ancho = 0; // Ancho inicial
+    this.alto = 60; // Altura fija
+    this.velocidad = 2; // Velocidad de expansión
+    this.texto = "➣ Interfaz De Tareas〔Dominique Carvajal Gonzalez〕 "; // Texto a mostrar
+  }
+
+  mostrar() {
+    fill(100);
+    stroke(255);
+    rect(this.x, this.y, this.ancho, this.alto);
+
+    if (this.ancho < width / 2) {
+      this.ancho += this.velocidad;
+    }
+    if (this.ancho >= width / 2) {
+      textAlign(CENTER, CENTER);
+      textSize(16);
+      fill(255);
+      text(this.texto, this.x + this.ancho / 2, this.y + this.alto / 2);
+    }
+  }
+}
+
