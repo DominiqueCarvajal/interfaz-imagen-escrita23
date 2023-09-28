@@ -19,7 +19,7 @@ function setup() {
     { x: 300, y: 200, url: 'https://dominiquecarvajal.github.io/tarea3-ie23-dominiquecarvajal/', nombre: 'Tarea 3' },
     { x: 400, y: 250, url: 'https://dominiquecarvajal.github.io/Tarea4-IE23-DominiqueCG/', nombre: 'Tarea 4' },
     { x: 150, y: 300, url: 'https://dominiquecarvajal.github.io/Tarea-5-IE-DC/', nombre: 'Tarea 5' },
-    { x: 250, y: 350, url: 'https://www.ejemplo.com/pagina6', nombre: 'Tarea 6' },
+    { x: 250, y: 350, url: 'https://dominiquecarvajal.github.io/Tarea-6-IE-DC/', nombre: 'Tarea 6' },
     { x: 350, y: 50, url: 'https://www.ejemplo.com/pagina7', nombre: 'Tarea 7' },
     { x: 450, y: 150, url: 'https://www.ejemplo.com/pagina8', nombre: 'Tarea 8' },
     { x: 550, y: 250, url: 'https://www.ejemplo.com/pagina9', nombre: 'Tarea 9' },
